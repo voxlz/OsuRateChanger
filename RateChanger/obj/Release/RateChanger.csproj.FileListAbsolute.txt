@@ -1,0 +1,17 @@
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Release\RateChanger.exe.config
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Release\RateChanger.exe
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Release\RateChanger.pdb
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Release\NAudio.dll
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Release\SoundTouchNet.dll
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Release\NAudio.xml
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Release\RateChanger.FrmMain.resources
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Release\RateChanger.Properties.Resources.resources
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Release\RateChanger.csproj.GenerateResource.Cache
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Release\RateChanger.exe
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Release\RateChanger.pdb
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Release\RateChanger.csprojResolveAssemblyReference.cache
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Release\libmp3lame.32.dll
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Release\libmp3lame.64.dll
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Release\NAudio.Lame.dll
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Release\SoundTouch.Net.dll
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Release\SoundTouch.Net.pdb

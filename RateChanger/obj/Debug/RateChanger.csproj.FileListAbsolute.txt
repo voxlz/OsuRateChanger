@@ -1,0 +1,17 @@
+c:\users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Debug\RateChanger.exe.config
+c:\users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Debug\RateChanger.exe
+c:\users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Debug\RateChanger.pdb
+c:\users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Debug\RateChanger.csprojResolveAssemblyReference.cache
+c:\users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Debug\RateChanger.Properties.Resources.resources
+c:\users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Debug\RateChanger.csproj.GenerateResource.Cache
+c:\users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Debug\RateChanger.exe
+c:\users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Debug\RateChanger.pdb
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Debug\NAudio.dll
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Debug\SoundTouchNet.dll
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\bin\Debug\NAudio.xml
+C:\Users\torbe\onedrive\documents\visual studio 2017\Projects\RateChanger\RateChanger\obj\Debug\RateChanger.FrmMain.resources
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Debug\SoundTouch.Net.dll
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Debug\SoundTouch.Net.pdb
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Debug\libmp3lame.32.dll
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Debug\libmp3lame.64.dll
+C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Debug\NAudio.Lame.dll

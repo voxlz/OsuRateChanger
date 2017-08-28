@@ -1,0 +1,39 @@
+ChangeLog:
+
+Version 0.1
+-Base functionallity
+
+Version 0.2
+- Fixed convert naming, now ends with ".osu"
+- Fixed bpm, wops
++ Added an Icon
++ Added compatability for fully hitsounded beatmaps
+
+Version 0.3
+- Fixed a potential crash if the map contained certain decimal values. 
+- Changed default map location to the songs folder
+- Changed a setting for the mac version. It's now only 283mb, instead of 587mb. WOPS!
++ Added shameless plug in converted maps. MOM, GET THE CAMERA!
+
+Version 0.4.1
+- Rewrote a lot of code
++ Added audio support! It will now automaticly convert the aduio file as well, if you so choose.
+
+Version 0.4.2
++ Added support for computers who don't have english as their base langurage.
+
+Version 0.4.3
++ Added support for computers who don't have english as their base langurage. For real this time.
+
+Version 0.5.1
+- Beatmaps were delayed by 80ms if audio was created by the rate changer. I therefor added a 80ms offset.
+- Restructure of .osu converter code. It was and in som eplaces still is a mess.
++ Added option to turn off offset.
++ You can now convert multiple diffs of a map at the same time! Just select them together.
++ It now supports all gamemodes! All osu players, rejoice!
++ Nightcore or daycore fan? No problem, added option to shut off pitch correction on your converts!
++ Program now supports bookmarks! For all you editors out there.
+
+Version 0.5.2
+- Fixed conversion of sv timing and other timing points
+- Fixed a bug where start button could not be pressed after getting a warning message.

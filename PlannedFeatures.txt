@@ -1,0 +1,9 @@
+Planned Features:
+
+- Support
+
+Considered Future Features:
+
+- Change background video rate
+- A loadingbar while converting
+- Speeding up audio conversion
