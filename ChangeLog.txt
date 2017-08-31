@@ -36,4 +36,15 @@ Version 0.5.1
 
 Version 0.5.2
 - Fixed conversion of sv timing and other timing points
-- Fixed a bug where start button could not be pressed after getting a warning message.
+- Fixed a bug were start start button could not be pressed after getting a warning message.
+
+Version 0.5.3
+- Fixed bug were the program would still generate .osu file after pressing cancel on warning message.
+- Removed offset checkbox. It would only confuse people.
++ Program now checks for if the new audiofile has not already been created, saving the user some time!
++ Made the program idiot-proof. It should now be ready for the public!
+
+Version 1.0.0 (Official release)
+- Fixed minor things
+- Re-added fully soundmapped beatmaps without mp3 support.
++ Posted to the osu forums!

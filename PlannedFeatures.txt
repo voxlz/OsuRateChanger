@@ -1,9 +1,5 @@
 Planned Features:
 
-- Support
-
-Considered Future Features:
-
-- Change background video rate
-- A loadingbar while converting
-- Speeding up audio conversion
+- Storybord Support (If people actually want this)
+- Continued bug support
+- Make it work with osu!lazer when that releses

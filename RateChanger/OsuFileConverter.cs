@@ -22,7 +22,7 @@ namespace RateChanger
 
             // Split string into ints, rate change and add offset
             string[] nums = data.Split(seperator);
-            var i = (int)Math.Round(int.Parse(nums[index], usCulture) / _rate) + _audioOffset;
+            var i = (int)Math.Round(double.Parse(nums[index], usCulture) / _rate) + _audioOffset;
             nums[index] = i.ToString(usCulture);
 
             // Asigning overwritten data to new file
@@ -60,8 +60,20 @@ namespace RateChanger
             return returnString;
         }
 
-        // Convert osu map
-        public string Start(string filePath, string fileName, string audioPrefix, double rate, bool useOffset)
+        // Get audio file name
+        public string getAudioName(string filePath, double rate)
+        {
+            string audioName = "";
+
+            string[] lines = File.ReadAllLines(@filePath);
+            string line = lines.First(x => x.Contains("AudioFilename:"));
+            audioName = line.Split(':')[1].Trim(' ');
+
+            return audioName;
+        }
+
+        // Convert the .osu map
+        public bool Start(string filePath, string fileName, double rate, bool useOffset)
         {
             _rate = rate;
             _audioOffset = useOffset ? 80 : 0;
@@ -91,14 +103,13 @@ namespace RateChanger
                     continue;
                 }
 
-                // Remember which category we are in, then skip line
+                // Remember which section we have arrived in the file, then skip line
                 if (line.StartsWith("["))
                 {
                     sections = lines[i];
                     newLines[i] = lines[i];
                     continue;
                 }
-
 
                 switch (sections)
                 {
@@ -107,8 +118,7 @@ namespace RateChanger
                         {
                             originalAudioFile = lines[i].Split(':')[1].Trim(' ');
                             string audioName = originalAudioFile.Remove(originalAudioFile.Length - 4);
-                            newLines[i] = "AudioFilename: " + audioName + rate * 100 + ".mp3";
-                            continue;
+                            newLine = "AudioFilename: " + audioName + rate * 100 + ".mp3";
                         }
                         if (line.Contains("PreviewTime:"))
                         {
@@ -121,10 +131,9 @@ namespace RateChanger
                             else
                             {
                                 MessageBox.Show("PreviewTime Error.", "Action not possible", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return "fileError";
+                                return false;
                             }
-                            newLines[i] = "PreviewTime: " + b.ToString(usCulture);
-                            continue;
+                            newLine = "PreviewTime: " + b.ToString(usCulture);
                         }
                         if (line.Contains("Mode:"))
                         {
@@ -137,10 +146,9 @@ namespace RateChanger
                             else
                             {
                                 MessageBox.Show("Mode Error.", "Action not possible", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return "fileError";
+                                return false;
                             }
-                            newLines[i] = "Mode: " + b.ToString(usCulture);
-                            continue;
+                            newLine = "Mode: " + b.ToString(usCulture);
                         }
                         break;
                     case "[Editor]":
@@ -159,15 +167,15 @@ namespace RateChanger
                         {
                             if (lines[i].Contains("SliderMultiplier:"))
                             {
-                                newLines[i] = "SliderMultiplier:" + (double.Parse(lines[i].Split(':')[1], usCulture) * rate).ToString(usCulture);
+                                newLine = "SliderMultiplier:" + (double.Parse(lines[i].Split(':')[1], usCulture) * rate).ToString(usCulture);
                             }
                             else if (lines[i].Contains("ApproachRate:"))
                             {
-                                newLines[i] = "ApproachRate:" + (double.Parse(lines[i].Split(':')[1], usCulture) / rate).ToString(usCulture);
+                                newLine = "ApproachRate:" + (double.Parse(lines[i].Split(':')[1], usCulture) / rate).ToString(usCulture);
                             }
                             else if (lines[i].Contains("SliderTickRate:"))
                             {
-                                newLines[i] = "SliderTickRate:" + (double.Parse(lines[i].Split(':')[1], usCulture) / rate).ToString(usCulture);
+                                newLine = "SliderTickRate:" + (double.Parse(lines[i].Split(':')[1], usCulture) / rate).ToString(usCulture);
                             }
                         }
                         break;
@@ -176,29 +184,22 @@ namespace RateChanger
                         {
                             if (rate != 1.0)
                             {
-                                newLines[i] = line + " " + rate + "x";
+                                newLine = line + " " + rate + "x";
                             }
                             else
                             {
-                                newLines[i] = line + " " + rate + ".0x";
+                                newLine = line + " " + rate + ".0x";
                             }
-                            continue;
                         }
-                        if (lines[i].Contains("BeatmapSetID:"))
+                        else if (line.Contains("BeatmapSetID:"))
                         {
-                            newLines[i] = "BeatmapSetID:-1";
-                            continue;
+                            newLine = "BeatmapSetID:-1";
                         }
                         break;
                     case "[Events]":
-                        if (lines[i].StartsWith("//"))
+                        if (line.StartsWith("//"))
                         {
-                            eventSection = lines[i];
-                            newLines[i] = lines[i];
-                        }
-                        else if (lines[i].Split(',')[1] == "0")
-                        {
-                            newLines[i] = lines[i];
+                            eventSection = line;
                         }
                         else
                         {
@@ -208,15 +209,13 @@ namespace RateChanger
                                     string[] breakPoints = lines[i].Split(',');
                                     int start = (int)Math.Round(int.Parse(breakPoints[1]) / rate);
                                     int end = (int)Math.Round(int.Parse(breakPoints[2]) / rate);
+                                    newLine = "2, " + start + ", " + end;
+                                    break;
+                                case "//Storyboard Sound Samples":
+                                    newLine = TimingConvert(line, 1, ',');
+                                    break;
 
-                                    newLines[i] = "2, " + start + ", " + end;
-                                    break;
-                                case "//Background Colour Transformations":
-                                    newLines[i] = lines[i];
-                                    break;
-                                default:
-                                    newLines[i] = TimingConvert(line, 1, ',');
-                                    break;
+                                    // TODO: STORYBORD?!
                             }
                         }
                         break;
@@ -284,7 +283,7 @@ namespace RateChanger
                 newLines[i] = newLine;
 
                 // If nothing else, just copy the line.
-                if (newLines[i] == "" || newLines[i] == null)
+                if (newLines[i] == "")
                 {
                     newLines[i] = lines[i];
                 }
@@ -317,13 +316,13 @@ namespace RateChanger
             else
             {
                 MessageBox.Show("File already exists.", "Action not possible", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return "fileError";
+                return false;
             }
 
             // Write the data in the new file
             File.WriteAllLines(pathString, newLines);
 
-            return originalAudioFile;
+            return true;
         }
     }
 }

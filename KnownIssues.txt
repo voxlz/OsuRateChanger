@@ -1,0 +1,3 @@
+Known Issues:
+
+- Storybords are not supported atm, probably best to turn them off when playing a convert
