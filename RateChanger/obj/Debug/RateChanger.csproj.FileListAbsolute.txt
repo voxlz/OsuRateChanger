@@ -15,3 +15,19 @@ C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateCh
 C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Debug\libmp3lame.32.dll
 C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Debug\libmp3lame.64.dll
 C:\Users\torbe\OneDrive\Documents\Visual Studio 2017\Projects\RateChanger\RateChanger\bin\Debug\NAudio.Lame.dll
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\obj\Debug\RateChanger.csprojResolveAssemblyReference.cache
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\obj\Debug\RateChanger.FrmMain.resources
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\obj\Debug\RateChanger.Properties.Resources.resources
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\obj\Debug\RateChanger.csproj.GenerateResource.Cache
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\obj\Debug\RateChanger.csproj.CoreCompileInputs.cache
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\obj\Debug\RateChanger.exe
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\obj\Debug\RateChanger.pdb
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\libmp3lame.32.dll
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\libmp3lame.64.dll
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\RateChanger.exe.config
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\RateChanger.exe
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\RateChanger.pdb
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\NAudio.dll
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\NAudio.Lame.dll
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\SoundTouch.Net.dll
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\NAudio.xml

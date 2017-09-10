@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using NAudio;
-using NAudio.Lame;
-using NAudio.Wave;
 using RateChanger.AudioConvert;
 using System.Globalization;
 
@@ -103,7 +93,14 @@ namespace RateChanger
             AudioStrech.Start(args, rateDeltaInProcent, keepPitch);
 
             // Convert .wav file to .mp3
-            Codec.WaveToMP3(audioFilePath + rate * 100 + ".wav", audioFilePath + rate * 100 + ".mp3");
+            try
+            {
+                Codec.WaveToMP3(audioFilePath + rate * 100 + ".wav", audioFilePath + rate * 100 + ".mp3");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Could not convert the modified .wav file to the .mp3 file.", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             // Remove the .wav files
             File.Delete(audioFilePath + ".wav");

@@ -32,11 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio, Version=1.8.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.8.1\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.3\lib\net35\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio.Lame, Version=1.0.5.30726, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.Lame.1.0.5\lib\net20\NAudio.Lame.dll</HintPath>
+    <Reference Include="NAudio.Lame, Version=1.0.5.27653, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.Lame.1.0.6\lib\net20\NAudio.Lame.dll</HintPath>
+    </Reference>
+    <Reference Include="SoundTouch.Net, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SoundTouch.Net.1.9.2.2\lib\net40\SoundTouch.Net.dll</HintPath>
     </Reference>
     <Reference Include="SoundTouchNet">
       <HintPath>..\..\..\..\..\..\Desktop\Libraries\SoundTouchNet.dll</HintPath>
@@ -106,13 +109,6 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\..\soundtouch.net-master\SoundTouch.Net\SoundTouch.Net.csproj">
-      <Project>{ea570592-1fab-412f-aa0c-159c947608cd}</Project>
-      <Name>SoundTouch.Net</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

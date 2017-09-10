@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RateChanger.AudioConvert
+﻿namespace RateChanger.AudioConvert
 {
-    using System.IO;
     using NAudio.Wave;
     using NAudio.Lame;
 

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RateChanger
@@ -188,6 +185,7 @@ namespace RateChanger
                             }
                             else
                             {
+                                // Why would you do this?!
                                 newLine = line + " " + rate + ".0x";
                             }
                         }
