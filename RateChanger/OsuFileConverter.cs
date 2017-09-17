@@ -69,7 +69,7 @@ namespace RateChanger
             return audioName;
         }
 
-        // Convert the .osu map
+        // Convert the .osu map, returns if successful
         public bool Start(string filePath, string fileName, double rate, bool useOffset)
         {
             _rate = rate;
@@ -155,6 +155,11 @@ namespace RateChanger
                             newLine = "Bookmarks: ";
                             for (int x = 0; x < bookmarks.Length; x++)
                             {
+                                if(bookmarks[x].Trim() == "")
+                                {
+                                    continue;
+                                }
+
                                 int book = int.Parse(bookmarks[x], usCulture);
                                 if (x != 0) newLine += " ,";
                                 newLine += (int)Math.Round(book / rate) + _audioOffset;
@@ -197,6 +202,7 @@ namespace RateChanger
                     case "[Events]":
                         if (line.StartsWith("//"))
                         {
+                            // Save what undercategory we are in.
                             eventSection = line;
                         }
                         else
@@ -212,8 +218,30 @@ namespace RateChanger
                                 case "//Storyboard Sound Samples":
                                     newLine = TimingConvert(line, 1, ',');
                                     break;
+                                case "//Storyboard Layer 0 (Background)":
+                                case "//Storyboard Layer 1 (Fail)":
+                                case "//Storyboard Layer 2 (Pass)":
+                                case "//Storyboard Layer 3 (Foreground)":
 
-                                    // TODO: STORYBORD?!
+                                    // If line is an event
+                                    if (line.StartsWith(" ") || line.StartsWith("_"))
+                                    {
+                                        // Change starttime
+                                        newLine = TimingConvert(line, 2, ',');
+
+                                        // Accomodates for the eventual shorthand ",," 
+                                        if (newLine.Split(',')[3].Trim() != "")
+                                        {
+                                            // Change endtime
+                                            newLine = TimingConvert(newLine, 3, ',');
+                                        }
+                                    }
+                                    // If line is an declaration and an animation
+                                    else if(line.Split(',')[0] == "Animation")
+                                    {
+                                        newLine = TimingConvert(newLine, 7, ',');
+                                    }
+                                    break;
                             }
                         }
                         break;
@@ -235,43 +263,23 @@ namespace RateChanger
                     case "[HitObjects]":
                         if (true)
                         {
-                            // Change offset on all hit objects
+                            // Change timing on all hit objects
                             newLine = TimingConvert(line, 2, ',');
 
                             // Gather data from line
                             string[] data = newLine.Split(',');
 
-                            // Change mania-sliders end timings
+                            // Change mania-sliders end-timings and... spinner end-timings somehow? Lol. 
                             if (!data[5].StartsWith("0") && !data[5].Contains("|"))
                             {
                                 data[5] = TimingConvert(data[5], 0, ':');
                                 newLine = "";
 
-                                // Asigning overwritten data to new line
+                                // Asigning overwritten data to the new line
                                 for (int x = 0; x < data.Length; x++)
                                 {
                                     if (x != 0) newLine += ",";
                                     newLine += data[x];
-                                }
-                            }
-
-                            // If it's not a mania map
-                            if (mode != 3)
-                            {
-                                int noteType = int.Parse(data[3], usCulture);
-
-                                // Remove info about combo colors
-                                noteType %= 16;
-
-                                switch (noteType)
-                                {
-                                    // In case of spinners
-                                    case 8:
-                                    case 12:
-
-                                        // Change endtime property
-                                        newLine = TimingConvert(newLine, 5, ',');
-                                        break;
                                 }
                             }
                         }

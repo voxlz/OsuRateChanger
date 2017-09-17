@@ -48,3 +48,7 @@ Version 1.0.0 (Official release)
 - Fixed minor things
 - Re-added fully soundmapped beatmaps without mp3 support.
 + Posted to the osu forums!
+
+Version 1.0.1
+- Fixed a bug that could crash the program if no Bookmarks were declared
+- Fixed a bug that broke all spinners
