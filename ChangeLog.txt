@@ -52,3 +52,4 @@ Version 1.0.0 (Official release)
 Version 1.0.1
 - Fixed a bug that could crash the program if no Bookmarks were declared
 - Fixed a bug that broke all spinners
++ Added storyboard support! Only works if it's in the diff file though, .osb files still not supported.
