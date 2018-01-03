@@ -3,67 +3,112 @@ using System.IO;
 using System.Windows.Forms;
 using RateChanger.AudioConvert;
 using System.Globalization;
+using System.Drawing;
+using System.Linq;
+using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace RateChanger
 {
     public partial class FrmMain : Form
     {
         CultureInfo usCulture = CultureInfo.CreateSpecificCulture("en-US");
+        ImageList imageListLarge;
 
-        static double[] rates;
-        string[] osuFilePaths;
-        string[] osuFileNames;
+        List<double> fileRates;
+        List<string> filePaths;
+        List<string> fileNames;
+
+        string osupath;
+        string songspath;
 
         public FrmMain()
         {
             InitializeComponent();
+
+            // Save the osu path directory
+            using (RegistryKey osureg = Registry.ClassesRoot.OpenSubKey("osu\\DefaultIcon"))
+            {
+                if (osureg != null)
+                {
+                    string osukey = osureg.GetValue(null).ToString();
+                    osupath = osukey.Remove(0, 1);
+                    osupath = osupath.Remove(osupath.Length - 11);
+                }
+            }
+
+            // Create song path
+            songspath = Path.Combine(osupath, "songs");
+
+            // Create ImageList object.
+            imageListLarge = new ImageList();
+            imageListLarge.ImageSize = new Size(64, 34);
+            imageListLarge.ColorDepth = ColorDepth.Depth32Bit;
+
+            fileRates = new List<double>();
+            fileNames = new List<string>();
+            filePaths = new List<string>();
         }
 
         // Opens a window so that the user can select an .osu file
-        private void FindFile(object sender, EventArgs e)
+        private void AddFileToQueue(object sender, EventArgs e)
         {
-            Stream myStream = null;
-            OpenFileDialog openFile = new OpenFileDialog();
+            OpenFileDialog filesDialog = new OpenFileDialog();
 
-            string[] stringPath = { Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "osu!", "Songs" };
-            string path = Path.Combine(stringPath);
+            filesDialog.Title = "Select diffs you want to convert";
+            filesDialog.Multiselect = true;
+            filesDialog.InitialDirectory = songspath;
+            filesDialog.Filter = "Osu files (*.osu)|*.osu";
+            filesDialog.FilterIndex = 2;
+            filesDialog.RestoreDirectory = true;
 
-            openFile.Title = "Select diffs you want to convert";
-            openFile.Multiselect = true;
-            openFile.InitialDirectory = path;
-            openFile.Filter = "Osu files (*.osu)|*.osu";
-            openFile.FilterIndex = 2;
-            openFile.RestoreDirectory = true;
-
-            if (openFile.ShowDialog() == DialogResult.OK)
+            if (filesDialog.ShowDialog() == DialogResult.OK)
             {
-                try
+                if (ValidateInputs())
                 {
-                    myStream = openFile.OpenFile();
-                    osuFilePaths = openFile.FileNames;
-                    osuFileNames = openFile.SafeFileNames;
-                    if (osuFileNames.Length == 1)
+                    try
                     {
-                        tbxFile.Text = osuFilePaths[0];
+                        AddToList(filesDialog);
+
+                        filePaths.AddRange(filesDialog.FileNames);
+                        fileNames.AddRange(filesDialog.SafeFileNames);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        tbxFile.Text = osuFilePaths.Length + " different files selected";
+                        MessageBox.Show("Error: Could not find file on disk. Original error: " + ex.Message);
                     }
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: Could not find file on disk. Original error: " + ex.Message);
-                    return;
                 }
             }
+        }
+
+        private void AddToList(OpenFileDialog files)
+        {
+            string[] rates = tbxRate.Text.Split(';');
+
+            for (int i = 0; i < files.FileNames.Length; i++)
+            {
+                for (int I = 0; I < rates.Length; I++)
+                {
+                    // Add to the list
+                    ListViewItem item = new ListViewItem(files.SafeFileNames[i], imageListLarge.Images.Count);
+                    item.SubItems.Add(rates[I] + "x");
+                    listView1.Items.Add(item);
+
+                    // Initialize the ImageList objects with bitmaps.
+                    string mapPath = Directory.GetParent(files.FileNames[i]).FullName;
+                    string[] backgroundImages = Directory.EnumerateFiles(mapPath, "*.*").Where(s => s.EndsWith(".png") || s.EndsWith(".jpg")).ToArray();
+                    imageListLarge.Images.Add(Bitmap.FromFile(backgroundImages[0]));
+                }
+            }
+
+            listView1.LargeImageList = imageListLarge;
+            listView1.SmallImageList = imageListLarge;
         }
 
         private bool ValidateInputs()
         {
             string[] rs = tbxRate.Text.Split(';');
-            rates = new double[rs.Length];
+            double[] rates = new double[rs.Length];
 
             for (int i = 0; i < rs.Length; i++)
             {
@@ -78,6 +123,8 @@ namespace RateChanger
                     return false;
                 }
             }
+
+            fileRates.AddRange(rates.ToList());
             return true;
         }
 
@@ -116,87 +163,84 @@ namespace RateChanger
             btnStart.Text = "Loading...";
             btnStart.Enabled = false;
 
-            if (ValidateInputs())
+            // For every file
+            for (int i = 0; i < filePaths.Count; i++)
             {
-                // For every file
-                for (int i = 0; i < osuFilePaths.Length; i++)
+                // For every convert
+                foreach (var rate in fileRates)
                 {
-                    // For every convert
-                    foreach (var rate in rates)
+                    string audioFilePath;
+                    string audioFileName = converter.getAudioName(filePaths[i], rate);
+
+                    if (audioFileName == "error")
                     {
-                        string audioFilePath;
-                        string audioFileName = converter.getAudioName(osuFilePaths[i], rate);
+                        MessageBox.Show("Could not read the .osu file correctly.", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    else if (audioFileName == "fileError")
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        DirectoryInfo songDir = Directory.GetParent(filePaths[i]);
+                        audioFilePath = Path.Combine(songDir.FullName, audioFileName);
+                        audioFilePath = audioFilePath.Substring(0, audioFilePath.Length - 4);
+                    }
 
-                        if (audioFileName == "error")
+                    // Convert the .mp3 file
+                    if (cbxAudio.Checked == true)
+                    {
+                        if (!File.Exists(audioFilePath + ".mp3"))
                         {
-                            MessageBox.Show("Could not read the .osu file correctly.", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Could not find the .mp3 file for the .osu file you selected. Make sure they are in the same folder!", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                            // Reset start button
+                            btnStart.Text = "Start Conversion";
+                            btnStart.Enabled = true;
+
                             return;
                         }
-                        else if (audioFileName == "fileError")
+                        else if (File.Exists(audioFilePath + rate * 100 + ".mp3"))
                         {
-                            return;
-                        }
-                        else
-                        {
-                            DirectoryInfo songDir = Directory.GetParent(osuFilePaths[i]);
-                            audioFilePath = Path.Combine(songDir.FullName, audioFileName);
-                            audioFilePath = audioFilePath.Substring(0, audioFilePath.Length - 4);
-                        }
+                            DialogResult answer = MessageBox.Show("There already excists an audio file called " + (audioFileName.Remove(audioFileName.Length - 4) + rate * 100 + ".mp3") + " here. Do you want to OVERWRITE the file?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
 
-                        // Convert the .mp3 file
-                        if (cbxAudio.Checked == true)
-                        {
-                            if (!File.Exists(audioFilePath + ".mp3"))
+                            if (answer == DialogResult.Yes)
                             {
-                                MessageBox.Show("Could not find the .mp3 file for the .osu file you selected. Make sure they are in the same folder!", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                
+                                ConvertAudio(audioFilePath, rate);
+                            }
+                            else if (answer == DialogResult.No)
+                            {
+                                // No nothing
+                            }
+                            else if (answer == DialogResult.Cancel)
+                            {
+                                // Stop converting
+
                                 // Reset start button
                                 btnStart.Text = "Start Conversion";
                                 btnStart.Enabled = true;
 
                                 return;
                             }
-                            else if (File.Exists(audioFilePath + rate*100 + ".mp3"))
-                            {
-                                DialogResult answer = MessageBox.Show("There already excists an audio file called " + (audioFileName.Remove(audioFileName.Length - 4) + rate * 100 + ".mp3") + " here. Do you want to OVERWRITE the file?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-
-                                if (answer == DialogResult.Yes)
-                                {
-                                    ConvertAudio(audioFilePath, rate);
-                                }
-                                else if (answer == DialogResult.No)
-                                {
-                                    // No nothing
-                                }
-                                else if (answer == DialogResult.Cancel)
-                                {
-                                    // Stop converting
-
-                                    // Reset start button
-                                    btnStart.Text = "Start Conversion";
-                                    btnStart.Enabled = true;
-
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                ConvertAudio(audioFilePath, rate);
-                            }                           
                         }
-
-                        // Convert the .osu file
-                        success = converter.Start(osuFilePaths[i], osuFileNames[i], rate, cbxAudio.Checked);
+                        else
+                        {
+                            ConvertAudio(audioFilePath, rate);
+                        }
                     }
+
+                    // Convert the .osu file
+                    success = converter.Start(filePaths[i], fileNames[i], rate, cbxAudio.Checked);
                 }
+            }
 
-                if (success)
+            if (success)
+            {
+                DialogResult exit = MessageBox.Show("Convertions successful! Do you want to exit the application?", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (exit == DialogResult.Yes)
                 {
-                    DialogResult exit = MessageBox.Show("Convertions successful! Do you want to exit the application?", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                    if (exit == DialogResult.Yes)
-                    {
-                        Application.Exit();
-                    }
+                    Application.Exit();
                 }
             }
 
@@ -221,6 +265,11 @@ namespace RateChanger
                 cbxPitch.Enabled = true;
 
             }
+        }
+
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

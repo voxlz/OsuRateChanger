@@ -31,3 +31,4 @@ C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\NAudio.dll
 C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\NAudio.Lame.dll
 C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\SoundTouch.Net.dll
 C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\NAudio.xml
+C:\Users\torbe\Source\Repos\OsuRateChanger\RateChanger\bin\Debug\osuElements.Net.dll
